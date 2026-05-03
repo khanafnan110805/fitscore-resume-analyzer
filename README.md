@@ -37,10 +37,10 @@ All instantly — no login, no API, no delay.
 ## 📸 Preview
 
 ### Landing Page
-![Landing Page]([./screenshots/landing.png](https://github.com/khanafnan110805/fitscore-resume-analyzer/blob/main/screenshots/landingpage.png))
+![Landing Page](https://github.com/khanafnan110805/fitscore-resume-analyzer/blob/17bbeeb189a86664e2840ad4ec2c93166346ac41/landingpage.png)
 
 ### Analysis Result
-![Analysis Result]([./screenshots/result.png](https://github.com/khanafnan110805/fitscore-resume-analyzer/blob/main/screenshots/Resultpage.png))
+![Analysis Result](https://github.com/khanafnan110805/fitscore-resume-analyzer/blob/17bbeeb189a86664e2840ad4ec2c93166346ac41/Resultpage.png)
 
 ---
 
