@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitScore — Resume Match Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-fs-bg text-fs-text min-h-screen">
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- ── HEADER ── -->
+    <header class="fixed top-0 left-0 right-0 z-50 header-bar">
+      <div
+        class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between"
+      >
+        <a
+          href="#"
+          class="logo-text"
+          onclick="
+            showPage('landing');
+            return false;
+          "
+          >FitScore</a
+        >
+        <nav class="flex items-center gap-4">
+          <span class="mono-tag hidden sm:inline"> No signup · Free</span>
+          <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">
+            <svg
+              id="moonIcon"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg
+              id="sunIcon"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              style="display: none"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </button>
+          <button class="cta-sm" onclick="showPage('analyzer')">
+            Try it free →
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ═══════════════════ LANDING PAGE ═══════════════════ -->
+    <div id="landingPage">
+      <section class="hero-section px-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="eyebrow mb-6">
+            <span class="mono-tag"
+              >100% client-side · Instant results · Zero cost</span
+            >
+          </div>
+          <h1 class="hero-heading mb-6">
+            Know exactly why<br />
+            your resume isn't<br />
+            <span class="accent-text">getting shortlisted.</span>
+          </h1>
+          <p class="hero-sub mb-10 max-w-lg">
+            Paste your resume and any job description. FitScore analyzes keyword
+            alignment, reveals missing skills, and suggests improvements —
+            instantly, in your browser.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 items-start">
+            <button class="cta-primary" onclick="showPage('analyzer')">
+              Analyze my resume
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+            <span class="hero-note self-center"
+              >Results appear instantly — no waiting, no server.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="px-6 pb-24">
+        <div class="max-w-4xl mx-auto">
+          <div class="section-divider mb-14"></div>
+
+          <!-- HOW IT WORKS -->
+          <p class="mono-label mb-10">How it works</p>
+          <div class="steps-grid mb-16">
+            <div class="step-card">
+              <div class="step-num">01</div>
+              <h3 class="step-title">Paste your inputs</h3>
+              <p class="step-desc">
+                Drop in your resume text and the job description you're applying
+                for.
+              </p>
+            </div>
+            <div class="step-connector" aria-hidden="true">→</div>
+            <div class="step-card">
+              <div class="step-num">02</div>
+              <h3 class="step-title">Instant NLP analysis</h3>
+              <p class="step-desc">
+                The scoring engine runs in your browser — no server, no API, no
+                waiting.
+              </p>
+            </div>
+            <div class="step-connector" aria-hidden="true">→</div>
+            <div class="step-card">
+              <div class="step-num">03</div>
+              <h3 class="step-title">Act on the gaps</h3>
+              <p class="step-desc">
+                See missing keywords, matched skills, and improved bullet
+                suggestions.
+              </p>
+            </div>
+          </div>
+
+          <!-- HOW SCORING WORKS -->
+          <div class="how-scoring-card mb-16">
+            <div class="how-scoring-header">
+              <p class="mono-label">How the score is calculated</p>
+            </div>
+            <div class="how-scoring-body">
+              <div class="scoring-step">
+                <div class="scoring-num">1</div>
+                <div>
+                  <p class="scoring-title">Term extraction</p>
+                  <p class="scoring-desc">
+                    Both texts are tokenized into single words and two-word
+                    phrases (bigrams). Stopwords are removed. Tech synonyms are
+                    normalized ("nodejs" → "node.js").
+                  </p>
+                </div>
+              </div>
+              <div class="scoring-step">
+                <div class="scoring-num">2</div>
+                <div>
+                  <p class="scoring-title">Section weighting</p>
+                  <p class="scoring-desc">
+                    Terms found near "Required", "Must have", or experience
+                    requirements score 2× higher than terms in "Nice to have" or
+                    company description sections.
+                  </p>
+                </div>
+              </div>
+              <div class="scoring-step">
+                <div class="scoring-num">3</div>
+                <div>
+                  <p class="scoring-title">Match scoring</p>
+                  <p class="scoring-desc">
+                    Each JD term gets a weighted importance score. Your resume
+                    is checked for each term. Final score = matched weight ÷
+                    total JD weight, calibrated to feel honest.
+                  </p>
+                </div>
+              </div>
+              <div class="scoring-step">
+                <div class="scoring-num">4</div>
+                <div>
+                  <p class="scoring-title">Improvement suggestions</p>
+                  <p class="scoring-desc">
+                    Bullet points from your resume are matched to missing JD
+                    terms by context proximity. Rule-based rewriting strengthens
+                    weak verbs and surfaces missing keywords.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="how-scoring-footer">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              This matches how ATS (Applicant Tracking Systems) actually work —
+              keyword frequency against job requirements. Not perfect, but the
+              same signal recruiters use.
+            </div>
+          </div>
+
+          <!-- FEATURES -->
+          <p class="mono-label mb-10">What you get</p>
+          <div class="features-grid mb-16">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="feature-title">Match score 0–100</h4>
+                <p class="feature-desc">
+                  Weighted keyword match calibrated to feel honest — not a
+                  flattering overcount.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                  />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="feature-title">Skills gap list</h4>
+                <p class="feature-desc">
+                  Critical vs Important vs Nice-to-have — so you know what to
+                  add first.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                  />
+                  <path
+                    d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4 class="feature-title">Bullet suggestions</h4>
+                <p class="feature-desc">
+                  Rule-based rewrites that add missing keywords and strengthen
+                  weak verbs.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4 class="feature-title">Instant · No cost</h4>
+                <p class="feature-desc">
+                  No API key, no server, no account. Runs entirely in your
+                  browser.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider mb-14"></div>
+          <div class="text-center">
+            <p class="cta-block-text mb-6">
+              Your next application could be your best one.
+            </p>
+            <button class="cta-primary" onclick="showPage('analyzer')">
+              Check my resume fit
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer-bar">
+        <div
+          class="max-w-6xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3"
+        >
+          <span class="logo-text text-sm">FitScore</span>
+          <span class="mono-tag"
+            >Pure client-side NLP · No data leaves your browser · Free
+            forever</span
+          >
+        </div>
+      </footer>
+    </div>
+
+    <!-- ═══════════════════ ANALYZER PAGE ═══════════════════ -->
+    <div id="analyzerPage" style="display: none">
+      <div class="max-w-6xl mx-auto px-6 pt-24 pb-20">
+        <div
+          class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+        >
+          <div>
+            <p class="mono-label mb-2">Resume analyzer</p>
+            <h2 class="page-title">Check your fit score</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="mono-tag hidden sm:inline">Results are instant</span>
+            <button class="back-btn" onclick="showPage('landing')">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+          </div>
+        </div>
+
+        <!-- Inputs -->
+        <div class="input-grid mb-6">
+          <div class="input-block">
+            <div class="input-header">
+              <label class="input-label" for="jobDesc">Job description</label>
+              <button
+                class="clear-btn"
+                onclick="clearField('jobDesc')"
+                title="Clear"
+              >
+                ✕
+              </button>
+            </div>
+            <textarea
+              id="jobDesc"
+              class="fs-textarea"
+              placeholder="Paste the full job description — requirements, responsibilities, qualifications..."
+              rows="16"
+            ></textarea>
+            <div class="char-count" id="jdCount">0 characters</div>
+          </div>
+
+          <div class="input-block">
+            <div class="input-header">
+              <label class="input-label" for="resumeText">Your resume</label>
+              <button
+                class="clear-btn"
+                onclick="clearField('resumeText')"
+                title="Clear"
+              >
+                ✕
+              </button>
+            </div>
+            <textarea
+              id="resumeText"
+              class="fs-textarea"
+              placeholder="Paste your resume — work experience, skills, projects, education..."
+              rows="16"
+            ></textarea>
+            <div class="char-count" id="resumeCount">
+              0 characters ·
+              <button
+                class="restore-btn"
+                id="restoreBtn"
+                onclick="restoreSaved()"
+                style="display: none"
+              >
+                Restore saved →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analyze button -->
+        <div
+          class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2"
+        >
+          <button id="analyzeBtn" class="cta-primary" onclick="runAnalysis()">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Analyze resume fit
+          </button>
+          <span class="mono-tag" id="saveNote"></span>
+        </div>
+        <p class="hint-text mb-12">
+          Analysis runs instantly in your browser. Press Ctrl+Enter to analyze.
+        </p>
+
+        <!-- Error -->
+        <div id="errorState" style="display: none" class="error-block mb-6">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <p id="errorMsg">Something went wrong.</p>
+        </div>
+
+        <!-- ── RESULTS ── -->
+        <div id="resultsSection" style="display: none">
+          <!-- Score row -->
+          <div class="results-header mb-10">
+            <div class="mono-label mb-4">Analysis complete</div>
+            <div class="score-summary-grid">
+              <div class="score-block">
+                <div class="score-ring-wrap">
+                  <svg
+                    class="score-ring-svg"
+                    viewBox="0 0 120 120"
+                    width="120"
+                    height="120"
+                  >
+                    <circle class="ring-track" cx="60" cy="60" r="50" />
+                    <circle
+                      class="ring-fill"
+                      id="scoreRingFill"
+                      cx="60"
+                      cy="60"
+                      r="50"
+                      stroke-dasharray="314.16"
+                      stroke-dashoffset="314.16"
+                      transform="rotate(-90 60 60)"
+                    />
+                  </svg>
+                  <div class="score-center-label">
+                    <span class="score-number" id="scoreNumber">--</span>
+                    <span class="score-denom">/100</span>
+                  </div>
+                </div>
+                <div class="score-meta">
+                  <div class="score-label-badge" id="scoreLabelBadge">—</div>
+                  <p class="score-reason" id="scoreReason">—</p>
+                </div>
+              </div>
+              <div class="summary-block">
+                <p class="mono-label-sm mb-3">Overall assessment</p>
+                <p class="summary-text" id="summaryText">—</p>
+                <div class="meta-row" id="metaRow"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills row -->
+          <div class="skills-grid mb-10">
+            <div class="skills-block">
+              <p class="mono-label-sm mb-4">
+                <span class="dot-green"></span>Matched skills
+              </p>
+              <div class="tags-wrap" id="matchedSkillsTags"></div>
+            </div>
+            <div class="skills-block">
+              <p class="mono-label-sm mb-4">
+                <span class="dot-red"></span>Missing skills
+              </p>
+              <div id="missingSkillsList"></div>
+            </div>
+          </div>
+
+          <!-- Improvements -->
+          <div class="improvements-section">
+            <div class="improvements-header mb-4">
+              <p class="mono-label mb-1">Resume improvements</p>
+              <p class="hint-text">
+                Rule-based suggestions to strengthen weak bullets and add
+                missing keywords.
+              </p>
+            </div>
+            <div id="improvementsList" class="improvements-list"></div>
+          </div>
+
+          <!-- Re-analyze -->
+          <div class="reanalyze-bar">
+            <button class="cta-sm" onclick="scrollToInputs()">
+              Refine inputs & re-analyze →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer-bar">
+        <div
+          class="max-w-6xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3"
+        >
+          <span class="logo-text text-sm">FitScore</span>
+          <span class="mono-tag"
+            >Pure client-side NLP · No data leaves your browser · Free
+            forever</span
+          >
+        </div>
+      </footer>
+    </div>
+
+    <script src="nlp.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
